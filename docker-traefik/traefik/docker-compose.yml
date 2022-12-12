@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  traefik:
+    image: traefik
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+      - 3306:3306
+      - 522:522
+    networks:
+      - default
+      - web
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/traefik.yml
+      - ./traefik-tls.yml:/traefik-tls.yml
+      - ./le/:/le
+      - ../certs:/certs
+    labels:
+      - "traefik.docker.network=web"
+      - "traefik.enable=false"
+    container_name: traefik
+
+networks:
+  web:
+    external: true
