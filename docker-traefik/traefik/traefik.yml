@@ -1,0 +1,32 @@
+entryPoints:
+  http:
+    address: :80
+  https:
+    address: :443
+  mysql:
+    address: :3306
+  ftp:
+    address: :522
+
+certificatesResolvers:
+  myhttpchallenge:
+    acme:
+      httpChallenge:
+        entryPoint: http
+      email: 
+      storage: /le/acme.json
+tls:
+  options:
+    akspaTLS:
+      minVersion: VersionTLS10
+
+providers:
+  docker:
+    exposedByDefault: false
+    network: web
+  file:
+    filename: /traefik-tls.yml
+    watch: true
+
+log:
+  level: ERROR

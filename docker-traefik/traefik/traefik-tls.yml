@@ -1,0 +1,51 @@
+tls:
+  options:
+    checkClientAuth:
+      clientAuth:
+        clientAuthType: VerifyClientCertIfGiven
+        caFiles:
+          - /certs/ca.pem
+
+http:
+  middlewares:
+    redirect-to-https:
+      redirectScheme:
+        scheme: https
+    redirect-www:
+      redirectRegex:
+        regex: ^https?://www.(.*)
+        replacement: https://${1}
+        permanent: true
+
+    passClientCert:
+      passtlsclientcert:
+        pem: false
+        info:
+          issuer:
+            CommonName: true
+            Country: true
+            Organization: true
+          subject:
+            CommonName: true
+
+    removeServer:
+      headers:
+        customResponseHeaders:
+          Server: ""
+
+  routers:
+    https-redirect:
+      entryPoints:
+        - http
+      # Activate this Router on any Host requested
+      rule: "hostregexp(`{host:.+}`)"
+      service: dummy
+      priority: 10
+      middlewares:
+        - redirect-to-https
+
+  services:
+    dummy:
+      loadBalancer:
+        servers:
+          - url: localhost
