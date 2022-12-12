@@ -19,3 +19,13 @@ Traefik is the proxy server and forwards domains to different applications, that
 
 Environment files contain passwords, in order to not store them in plaintext on the filesystem they are encrypted, and decrypted to inject the keys into docker-compose starting the services. This is not
 entirely secure, since the passwords are still in the environment of the docker instances, that use them.
+
+## Tools
+- restic: Backups
+- rclone: Mounting filesystems
+- postgres: Database
+- Wireguard: vpn
+- Docker
+- Traefik
+- Caddy
+-
